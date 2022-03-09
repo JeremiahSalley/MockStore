@@ -120,7 +120,6 @@ searchInput.addEventListener("input", (e) => {
   });
 });
 
-// let cartItems = [];
 
 //grab the add to bag button on each
 let addToBag = document.getElementsByClassName("add-cart-btn");
@@ -175,15 +174,33 @@ function addItemToCart(title, price, imgSrc) {
 // Creating the cart modal open and close feature
 const cartBtn = document.querySelector(".cart");
 let modal = document.querySelector(".modal-container");
+let sectionHeader = document.querySelector('.section-header')
 const closeModal = document.querySelector(".close-button");
+let productscroll = document.getElementById('products')
 cartBtn.addEventListener("click", cartModal);
+closeModal.addEventListener("click",closeModalFunc)
+
 function cartModal() {
   modal.classList.toggle("show-modal");
-  closeModal.addEventListener("click", function () {
-    modal.classList.remove("show-modal");
-  });
+  modal.style.overflowY = 'auto';
+
+  document.documentElement.style.getPropertyValue('--scroll-y');
+  const body = document.body;
+  body.style.height = '100vh';
+  body.style.overflowY = 'hidden';
   updateCartTotal()
   removeItemsFromCart()
+}
+
+function closeModalFunc(){
+  modal.classList.remove("show-modal");
+  const body = document.body;
+  const scrollY = body.style.top;
+  body.style.position = '';
+  body.style.top = '';
+  body.style.height = '';
+  body.style.overflowY = '';
+  window.scrollTo(0, parseInt(scrollY || '0') * -1);
 }
 
 // remove item from cart
@@ -251,7 +268,10 @@ function purchaseClicked(){
     while(cartItems.hasChildNodes()){
         cartItems.removeChild(cartItems.firstChild)
     }
+    // const body = document.body
+    // body.style.overflowY = auto;
     cartModal()
+    closeModalFunc()
     updateCartTotal()
 }
 
